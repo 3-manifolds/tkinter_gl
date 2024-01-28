@@ -1,0 +1,45 @@
+[build-system]
+requires = [
+    "setuptools>=60",
+    "setuptools-scm>=8.0",
+    "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tkinter-gl"
+dynamic = ["version"]
+description = "A base class for GL rendering surfaces in tkinter."
+readme = {file = "README.rst", content-type = "text/x-rst"}
+authors = [
+    { name="Marc Culler", email="culler@users.noreply.github.com" },
+    { name="Nathan M. Dunfield", email="nathan@dunfield.info" },
+    { name="Matthias Görner", email="enischte@gmail.com" },
+]
+maintainers = [
+    { name="Marc Culler", email="culler@users.noreply.github.com" },
+    { name="Nathan M. Dunfield", email="nathan@dunfield.info" },
+    { name="Matthias Görner", email="enischte@gmail.com" },
+]
+requires-python = ">=3.8"
+keywords = ["OpenGL", "tkinter", "rendering"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Widget Sets"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/3-manifolds/tkinter_gl"
+"Bug Tracker" = "https://github.com/3-manifolds/tkinter_gl/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "tkinter_gl.__version__"}
+
+[tool.setuptools.package-data]
+tkinter_gl = ["tk/darwin/*/*"]
