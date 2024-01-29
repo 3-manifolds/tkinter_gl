@@ -18,6 +18,7 @@ class GLView(GLViewBase):
         self.swap_buffers()
         
 root = tkinter.Tk()
+root.update() # Needed by linux and Windows
 surface = GLView(root)
 print("Using OpenGL", surface.gl_version())
 surface.pack()
