@@ -13,6 +13,7 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
     def __init__(self, parent, cnf={}, **kw):
         self.parent = parent
         if sys.platform in ('linux', 'win32'):
+            # Make sure the parent has been mapped.
             parent.update()
         pkg_dir = os.path.join(__path__[0], 'tk', sys.platform,)
         if not os.path.exists(pkg_dir):
@@ -22,7 +23,12 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
         if self.profile:
             kw['profile'] = self.profile
         tkinter.Widget.__init__(self, parent, 'tkgl', cnf, kw)
-        self.make_current()
+        try:
+            self.draw()
+        except:
+            # OpenGL may not be initialized.  Wait a bit.
+            print('waiting')
+            self.after(50, self.draw)
 
     def gl_version(self):
         return self.tk.call(self._w, 'glversion')
@@ -33,8 +39,9 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
     def swap_buffers(self):
         self.tk.call(self._w, 'swapbuffers')
 
-    def draw(self):
+    def draw(self, event=None):
         """Draw the scene.
 
         Subclasses override this method to make GL calls.
         """
+        pass
