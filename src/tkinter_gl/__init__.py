@@ -12,6 +12,8 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
 
     def __init__(self, parent, cnf={}, **kw):
         self.parent = parent
+        if sys.platform in ('linux', 'win32'):
+            parent.update()
         pkg_dir = os.path.join(__path__[0], 'tk', sys.platform,)
         if not os.path.exists(pkg_dir):
             raise RuntimeError('TkGL package directory "%s" is missing.' % pkg_dir)
