@@ -27,8 +27,8 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
             self.draw()
         except:
             # OpenGL may not be initialized.  Wait a bit.
-            print('waiting')
-            self.after(50, self.draw)
+            pass
+        self.after(50, self.draw)
 
     def gl_version(self):
         return self.tk.call(self._w, 'glversion')
