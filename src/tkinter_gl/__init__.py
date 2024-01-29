@@ -1,7 +1,7 @@
 import os
 import sys
 import tkinter
-__version__ = '1.0a0'
+__version__ = '1.0a1'
 
 class GLViewBase(tkinter.Widget, tkinter.Misc):
     """
@@ -23,12 +23,10 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
         if self.profile:
             kw['profile'] = self.profile
         tkinter.Widget.__init__(self, parent, 'tkgl', cnf, kw)
-        try:
-            self.draw()
-        except:
-            # OpenGL may not be initialized.  Wait a bit.
-            pass
-        self.after(50, self.draw)
+        self.bind('<Expose>', self.handle_expose)
+        # Make sure the handler is installed.
+        self.update_idletasks()
+
 
     def gl_version(self):
         return self.tk.call(self._w, 'glversion')
@@ -39,6 +37,9 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
     def swap_buffers(self):
         self.tk.call(self._w, 'swapbuffers')
 
+    def handle_expose(self, event=None):
+        self.after_idle(self.draw)
+            
     def draw(self, event=None):
         """Draw the scene.
 
