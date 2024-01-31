@@ -38,7 +38,7 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
         self.tk.call(self._w, 'swapbuffers')
 
     def handle_expose(self, event=None):
-        self.draw()
+        self.after_idle(self.draw)
 
     def draw(self):
         """Draw the scene.
