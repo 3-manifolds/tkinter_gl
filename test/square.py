@@ -36,7 +36,7 @@ class SquareWidget(GLCanvas):
 
         self.swap_buffers()
 
-class Window(tkinter.Tk):
+class Window(tkinter.Toplevel):
     def __init__(self):
         super().__init__()
 
@@ -89,9 +89,10 @@ class Window(tkinter.Tk):
 
 if __name__ == '__main__':
 
+    sliderWindow = tkinter.Tk()
+
     window = Window()
 
-    sliderWindow = tkinter.Tk()
     slider = ttk.Scale(master=sliderWindow,
                        orient=tkinter.HORIZONTAL,
                        command=window.set_size,
