@@ -3,7 +3,7 @@ import sys
 import tkinter
 __version__ = '1.0a1'
 
-class GLWidget(tkinter.Widget, tkinter.Misc):
+class GLCanvas(tkinter.Widget, tkinter.Misc):
     """
     A Tk widget which provides an OpenGL rendering surface.
     """

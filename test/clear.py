@@ -1,8 +1,8 @@
 import tkinter
-from tkinter_gl import GLWidget
-from OpenGL import GL
+from tkinter_gl import GLCanvas
+from tkinter_gl.legacy import *
 
-class GLView(GLWidget):
+class GLView(GLCanvas):
     def __init__(self, parent, cnf={}, **kw):
         super().__init__(parent, cnf, **kw)
         self.bind('<Enter>', lambda event: self.draw_impl(color='blue'))
@@ -18,10 +18,10 @@ class GLView(GLWidget):
     def draw_impl(self, color):
         self.make_current()
         if color == 'blue':
-            GL.glClearColor(0.0, 0, 1.0, 1.0)
+            glClearColor(0.0, 0, 1.0, 1.0)
         elif color == 'purple':
-            GL.glClearColor(1.0, 0, 1.0, 1.0)
-        GL.glClear(GL.GL_COLOR_BUFFER_BIT)
+            glClearColor(1.0, 0, 1.0, 1.0)
+        glClear(GL_COLOR_BUFFER_BIT)
         self.swap_buffers()
 
 if __name__ == '__main__':

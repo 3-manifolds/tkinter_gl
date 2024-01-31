@@ -1,11 +1,11 @@
 import tkinter
 from tkinter import ttk
-from tkinter_gl import GLWidget
-from OpenGL import GL
+from tkinter_gl import GLCanvas
+from tkinter_gl.legacy import *
 
 import time
 
-class SquareWidget(GLWidget):
+class SquareWidget(GLCanvas):
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -16,21 +16,21 @@ class SquareWidget(GLWidget):
     def draw(self):
         self.make_current()
  
-        GL.glViewport(0, 0, self.winfo_width(), self.winfo_height())
+        glViewport(0, 0, self.winfo_width(), self.winfo_height())
 
-        GL.glClearColor(0, 0, 0, 1)
-        GL.glClear(GL.GL_COLOR_BUFFER_BIT)
+        glClearColor(0, 0, 0, 1)
+        glClear(GL_COLOR_BUFFER_BIT)
 
-        GL.glBegin(GL.GL_QUADS)
-        GL.glVertex2d( self.x + self.size,  self.y + self.size)
-        GL.glVertex2d( self.x + self.size,  self.y - self.size)
-        GL.glVertex2d( self.x - self.size,  self.y - self.size)
-        GL.glVertex2d( self.x - self.size,  self.y + self.size)
-        GL.glEnd()
+        glBegin(GL_QUADS)
+        glVertex2d( self.x + self.size,  self.y + self.size)
+        glVertex2d( self.x + self.size,  self.y - self.size)
+        glVertex2d( self.x - self.size,  self.y - self.size)
+        glVertex2d( self.x - self.size,  self.y + self.size)
+        glEnd()
 
         while True:
-            err = GL.glGetError()
-            if err == GL.GL_NO_ERROR:
+            err = glGetError()
+            if err == GL_NO_ERROR:
                 break
             print("Error: ", err)
 

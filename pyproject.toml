@@ -2,7 +2,8 @@
 requires = [
     "setuptools>=60",
     "setuptools-scm>=8.0",
-    "wheel"]
+    "wheel",
+    "Cython"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -43,3 +44,13 @@ version = {attr = "tkinter_gl.__version__"}
 
 [tool.setuptools.package-data]
 tkinter_gl = ["tk/darwin/*/*"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+
+[tools.setuptools]
+packages = ["tkinter_gl"]
+
+
