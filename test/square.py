@@ -5,8 +5,6 @@ from OpenGL import GL
 
 import time
 
-separate_slider = True
-
 class GLView(GLViewBase):
     def __init__(self, parent):
         super().__init__(parent)
@@ -15,11 +13,8 @@ class GLView(GLViewBase):
         self.x = 0.0
         self.y = 0.0
 
-    def set_size(self, value):
-        self.size = float(value)
-        self.draw()
-
-    def draw(self, event=None):
+    def draw(self):
+        self.make_current()
  
         GL.glViewport(0, 0, self.winfo_width(), self.winfo_height())
 
@@ -51,46 +46,43 @@ class Window(tkinter.Tk):
         self.label = ttk.Label(self, text="Use cursor keys to move square")
         self.label.grid(row=0, column=0)
 
-        self.glView = GLView(self)
-        self.glView.grid(row=1, column=0)
+        self.gl_view = GLView(self)
+        self.gl_view.grid(row=1, column=0)
 
-        if not separate_slider:
-            self.slider = ttk.Scale(master=self,
-                                    orient=tkinter.HORIZONTAL,
-                                    command=self.glView.set_size,
-                                    value=self.glView.size)
-            self.slider.grid(row=1, column=0, sticky=tkinter.NSEW)
+        self.bind('<KeyPress>', self.handle_key_press)
+        self.bind('<KeyRelease>', self.handle_key_release)
 
-        self.bind('<KeyPress>', self.tkKeyPress)
-        self.bind('<KeyRelease>', self.tkKeyRelease)
+    def set_size(self, value):
+        self.gl_view.size = float(value)
+        self.gl_view.draw()
 
-    def tkKeyPress(self, event=None):
+    def handle_key_press(self, event):
         self.key_pressed = event.keysym.lower()
         self.time_pressed = time.time()
 
         if self.key_pressed in ['left', 'right', 'up', 'down']:
             self.after(5, self.advance)
 
-    def tkKeyRelease(self, event=None):
+    def handle_key_release(self, event):
         self.key_pressed = None
 
-    def advance(self, event=None):
+    def advance(self):
         if self.key_pressed is None:
             return
 
-        self.glView.draw()
+        self.gl_view.draw()
         t = time.time()
 
         delta = 0.1 * (t - self.time_pressed)
 
         if self.key_pressed == 'left':
-            self.glView.x -= delta
+            self.gl_view.x -= delta
         if self.key_pressed == 'right':
-            self.glView.x += delta
+            self.gl_view.x += delta
         if self.key_pressed == 'up':
-            self.glView.y += delta
+            self.gl_view.y += delta
         if self.key_pressed == 'down':
-            self.glView.y -= delta
+            self.gl_view.y -= delta
 
         self.time_pressed = t
         self.after(5, self.advance)
@@ -99,12 +91,12 @@ if __name__ == '__main__':
 
     window = Window()
 
-    if separate_slider:
-        sliderWindow = tkinter.Tk()
-        slider = ttk.Scale(master=sliderWindow,
-                           orient=tkinter.HORIZONTAL,
-                           command=window.glView.set_size)
-        slider.grid(row=0, column=0, sticky=tkinter.NSEW)
+    sliderWindow = tkinter.Tk()
+    slider = ttk.Scale(master=sliderWindow,
+                       orient=tkinter.HORIZONTAL,
+                       command=window.set_size,
+                       value=window.gl_view.size)
+    slider.grid(row=0, column=0, sticky=tkinter.NSEW)
 
     print("Using OpenGL", window.square_widget.gl_version())
 
