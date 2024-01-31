@@ -3,7 +3,7 @@ import sys
 import tkinter
 __version__ = '1.0a1'
 
-class GLViewBase(tkinter.Widget, tkinter.Misc):
+class GLWidget(tkinter.Widget, tkinter.Misc):
     """
     A Tk widget which provides an OpenGL rendering surface.
     """
@@ -11,7 +11,6 @@ class GLViewBase(tkinter.Widget, tkinter.Misc):
     profile = ''
 
     def __init__(self, parent, cnf={}, **kw):
-        self.parent = parent
         if sys.platform in ('linux', 'win32'):
             # Make sure the parent has been mapped.
             parent.update()

@@ -1,10 +1,10 @@
 import tkinter
-from tkinter_gl import GLViewBase
+from tkinter_gl import GLWidget
 from OpenGL import GL
 
-class GLView(GLViewBase):
+class GLView(GLWidget):
     def __init__(self, parent, cnf={}, **kw):
-        GLViewBase.__init__(self, parent, cnf, **kw)
+        super().__init__(parent, cnf, **kw)
         self.bind('<Enter>', lambda event: self.draw(color='blue'))
         self.bind('<Leave>', lambda event: self.draw(color='purple'))
         

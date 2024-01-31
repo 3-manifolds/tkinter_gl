@@ -1,11 +1,11 @@
 import tkinter
 from tkinter import ttk
-from tkinter_gl import GLViewBase
+from tkinter_gl import GLWidget
 from OpenGL import GL
 
 import time
 
-class GLView(GLViewBase):
+class SquareWidget(GLWidget):
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -46,15 +46,15 @@ class Window(tkinter.Tk):
         self.label = ttk.Label(self, text="Use cursor keys to move square")
         self.label.grid(row=0, column=0)
 
-        self.gl_view = GLView(self)
-        self.gl_view.grid(row=1, column=0)
+        self.square_widget = SquareWidget(self)
+        self.square_widget.grid(row=1, column=0)
 
         self.bind('<KeyPress>', self.handle_key_press)
         self.bind('<KeyRelease>', self.handle_key_release)
 
     def set_size(self, value):
-        self.gl_view.size = float(value)
-        self.gl_view.draw()
+        self.square_widget.size = float(value)
+        self.square_widget.draw()
 
     def handle_key_press(self, event):
         self.key_pressed = event.keysym.lower()
@@ -70,19 +70,19 @@ class Window(tkinter.Tk):
         if self.key_pressed is None:
             return
 
-        self.gl_view.draw()
+        self.square_widget.draw()
         t = time.time()
 
         delta = 0.1 * (t - self.time_pressed)
 
         if self.key_pressed == 'left':
-            self.gl_view.x -= delta
+            self.square_widget.x -= delta
         if self.key_pressed == 'right':
-            self.gl_view.x += delta
+            self.square_widget.x += delta
         if self.key_pressed == 'up':
-            self.gl_view.y += delta
+            self.square_widget.y += delta
         if self.key_pressed == 'down':
-            self.gl_view.y -= delta
+            self.square_widget.y -= delta
 
         self.time_pressed = t
         self.after(5, self.advance)
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     slider = ttk.Scale(master=sliderWindow,
                        orient=tkinter.HORIZONTAL,
                        command=window.set_size,
-                       value=window.gl_view.size)
+                       value=window.square_widget.size)
     slider.grid(row=0, column=0, sticky=tkinter.NSEW)
 
     print("Using OpenGL", window.square_widget.gl_version())
