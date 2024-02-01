@@ -29,7 +29,7 @@ if __name__ == '__main__':
     root = tkinter.Tk()
     surface = GLView(root)
     print("Using OpenGL", surface.gl_version())
-    surface.pack(expand=True, fill='both')
+    surface.pack(expand=True, fill='both', padx=50, pady=50)
     root.mainloop()
 
     
