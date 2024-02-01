@@ -5,7 +5,7 @@
 #endif
 
 #ifdef __linux
-#include "gl.h"
+#include "GL/gl.h"
 #endif
 
 #ifdef __APPLE__

@@ -28,8 +28,11 @@ if sys.platform == 'darwin':
     OpenGL_extra_link_args = ['-framework', 'OpenGL']
     OpenGL_extra_link_args += macOS_link_args
 
-if sys.platform == 'win32':
+elif sys.platform == 'win32':
     OpenGL_extra_link_args = ['opengl32.lib']
+
+elif sys.platform == 'linux':
+    OpenGL_extra_link_args = ['-lGL']
 
 extensions = cythonize(
     Extension(
