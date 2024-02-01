@@ -1,6 +1,6 @@
 #This is obviously incomplete.  So far it is just a proof-of-concept.
 
-cdef extern from "gltypes.h":
+cdef extern from "gl_headers.h":
     ctypedef unsigned int GLenum
     ctypedef unsigned char GLboolean
     ctypedef unsigned int GLbitfield
@@ -25,7 +25,6 @@ cdef extern from "gltypes.h":
         GL_QUADS
         GL_NO_ERROR
 
-cdef extern from "gl.h":
     GLenum glGetError()
     void glClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha )
     void glClear(GLbitfield mask )
