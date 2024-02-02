@@ -94,7 +94,7 @@ if __name__ == '__main__':
 
     window = Window()
 
-    slider = ttk.Scale(master=sliderWindow,
+    slider = ttk.Scale(sliderWindow,
                        orient=tkinter.HORIZONTAL,
                        command=window.set_size,
                        value=window.square_widget.size)
