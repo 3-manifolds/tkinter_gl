@@ -1,7 +1,7 @@
 import os
 import sys
 import tkinter
-__version__ = '1.0a1'
+__version__ = '1.0a2'
 
 class GLCanvas(tkinter.Widget, tkinter.Misc):
     """
@@ -11,7 +11,7 @@ class GLCanvas(tkinter.Widget, tkinter.Misc):
     profile = ''
 
     def __init__(self, parent, cnf={}, **kw):
-        if sys.platform in ('linux', 'win32'):
+        if sys.platform == 'win32':
             # Make sure the parent has been mapped.
             parent.update()
         pkg_dir = os.path.join(__path__[0], 'tk', sys.platform,)
@@ -22,8 +22,8 @@ class GLCanvas(tkinter.Widget, tkinter.Misc):
         if self.profile:
             kw['profile'] = self.profile
         tkinter.Widget.__init__(self, parent, 'tkgl', cnf, kw)
-
         self.bind('<Expose>', self._handle_expose)
+        self.bind('<Map>', self._handle_map)
 
         # Make sure the handler is installed.
         self.update_idletasks()
@@ -45,4 +45,7 @@ class GLCanvas(tkinter.Widget, tkinter.Misc):
         """
 
     def _handle_expose(self, event):
+        self.after_idle(self.draw)
+
+    def _handle_map(self, event):
         self.after_idle(self.draw)

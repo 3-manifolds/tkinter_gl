@@ -44,14 +44,22 @@ class Window(tkinter.Toplevel):
         self.key_pressed = None
         self.time_pressed = 0
 
-        self.label = ttk.Label(self, text="Use cursor keys to move square")
-        self.label.grid(row=0, column=0)
+        # On X11 at least, putting the TkGL widget in a frame
+        # avoids some layout issues.
 
-        self.square_widget = SquareWidget(self)
-        self.square_widget.grid(row=1, column=0)
-
+        label = ttk.Label(self, padding=(20, 0, 20, 0),
+                          text="Use cursor keys to move square")
+        frame = ttk.Frame(self)
+        self.square_widget = SquareWidget(frame)
+        
+        label.pack(fill='x')
+        frame.pack(expand=1, fill="both")
+        self.square_widget.pack(expand=1, fill="both")
+        
         self.bind('<KeyPress>', self.handle_key_press)
         self.bind('<KeyRelease>', self.handle_key_release)
+
+        self.update()
 
     def set_size(self, value):
         self.square_widget.size = float(value)
@@ -90,17 +98,22 @@ class Window(tkinter.Toplevel):
 
 if __name__ == '__main__':
 
-    sliderWindow = tkinter.Tk()
-
+    root = tkinter.Tk()
     window = Window()
 
-    slider = ttk.Scale(master=sliderWindow,
+    root.geometry('300x50+600+100')
+
+    label = ttk.Label(root, text="Zoom: ", padding=(10, 0, 0, 0))
+    label.grid(row=0, column=0)
+    
+    slider = ttk.Scale(root,
                        orient=tkinter.HORIZONTAL,
                        command=window.set_size,
                        value=window.square_widget.size)
-    slider.grid(row=0, column=0, sticky=tkinter.NSEW)
+    slider.grid(row=0, column=1, padx=20, pady=20, sticky='nsew')
+    root.columnconfigure(1, weight=1)
 
     print("Using OpenGL", window.square_widget.gl_version())
 
-    window.mainloop()
+    root.mainloop()
 
