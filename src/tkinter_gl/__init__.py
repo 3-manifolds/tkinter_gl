@@ -31,6 +31,9 @@ class GLCanvas(tkinter.Widget, tkinter.Misc):
     def gl_version(self):
         return self.tk.call(self._w, 'glversion')
 
+    def gl_extensions(self):
+        return self.tk.call(self._w, 'extensions')
+
     def make_current(self):
         self.tk.call(self._w, 'makecurrent')
 
