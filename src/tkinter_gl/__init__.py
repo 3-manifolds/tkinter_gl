@@ -10,7 +10,20 @@ class GLCanvas(tkinter.Widget, tkinter.Misc):
     Clients should subclass from GLCanvas and implement draw.
 
     To specify an OpenGL version, the subclass should override GLCanvas.profile
-    to "legacy" (requesting an OpenGL 2.1 context from the OS), "3_2" or "4_1".
+    to "legacy", "3_2" or "4_1".
+
+    "legacy" requests OpenGL version 2.1 from the OS. The OS will produce
+    an OpenGL context supporting the fixed function pipeline and legacy calls
+    such as glBegin/glEnd.
+
+    "3_2" and "4_1" requests OpenGL version 3.2 or 4.1, respectively, from the
+    OS. The OS will produce an OpenGL context supporting shaders of a version
+    later than the one request.
+
+    Note that we do not have a flag to (explicitly) request a compatibility
+    context supporting both legacy calls such as glBegin/glEnd as well as
+    shaders (the reason is that Mac OS X does not provide API for such a
+    request).
 
     See https://github.com/3-manifolds/tkinter_gl/tree/main/test for examples.
     """
