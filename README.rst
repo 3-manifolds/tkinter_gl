@@ -1,8 +1,10 @@
 tkinter_gl
 ==========
 
-This minimal Python package provides a tkinter widget class GLCanvas which
+This Python package provides the tkinter widget class GLCanvas which
 can serve as a rendering surface for an OpenGL client.
 
-Currently the package is not ready for release.  This README will be expanded
-later.
+The responsibility of this class is only to manage an OpenGL context.
+
+Clients need some other library such as PyOpenGL to make the OpenGL
+calls from python.

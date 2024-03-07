@@ -1,9 +1,18 @@
 import tkinter
 from tkinter_gl import GLCanvas
-from OpenGL.GL import glClear, glClearColor
-from OpenGL.GL import GL_COLOR_BUFFER_BIT
+try:
+    from OpenGL import GL
+except ImportError:
+    raise ImportError(
+        """
+        This example requires PyOpenGL.
+
+        You can install it with "pip install PyOpenGL".
+        """)
 
 class GLView(GLCanvas):
+    profile = 'legacy'
+    
     def __init__(self, parent, cnf={}, **kw):
         super().__init__(parent, cnf, **kw)
         self.bind('<Enter>', lambda event: self.draw_impl(color='blue'))
@@ -19,10 +28,10 @@ class GLView(GLCanvas):
     def draw_impl(self, color):
         self.make_current()
         if color == 'blue':
-            glClearColor(0.0, 0, 1.0, 1.0)
+            GL.glClearColor(0.0, 0, 1.0, 1.0)
         elif color == 'purple':
-            glClearColor(1.0, 0, 1.0, 1.0)
-        glClear(GL_COLOR_BUFFER_BIT)
+            GL.glClearColor(1.0, 0, 1.0, 1.0)
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT)
         self.swap_buffers()
 
 if __name__ == '__main__':
