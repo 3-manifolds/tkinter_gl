@@ -1,37 +1,56 @@
 import tkinter
 from tkinter import ttk
 from tkinter_gl import GLCanvas
-from OpenGL.GL import (glClear, glClearColor, glBegin, glEnd,
-    glVertex2d, glViewport, glGetError)
-from OpenGL.GL import GL_COLOR_BUFFER_BIT, GL_QUADS, GL_NO_ERROR
 import time
+try:
+    from OpenGL import GL
+except ImportError:
+    raise ImportError(
+        """
+        This example requires PyOpenGL.
+
+        You can install it with "pip install PyOpenGL".
+        """)
+
+"""
+Shows a square that can be moved with the cursor keys and whose size
+can be controlled by a slider.
+
+Shows how to do "animation", that is repeatedly calling draw using the
+elapsed time to compute how far the square has moved. Also tests that
+we correctly update the GLCanvas to slider events.
+"""
 
 class SquareWidget(GLCanvas):
+    profile = 'legacy'
+    
     def __init__(self, parent):
         super().__init__(parent)
 
         self.size = 0.5
+
+        # Position of square.
         self.x = 0.0
         self.y = 0.0
 
     def draw(self):
         self.make_current()
  
-        glViewport(0, 0, self.winfo_width(), self.winfo_height())
+        GL.glViewport(0, 0, self.winfo_width(), self.winfo_height())
 
-        glClearColor(0, 0, 0, 1)
-        glClear(GL_COLOR_BUFFER_BIT)
+        GL.glClearColor(0, 0, 0, 1)
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT)
 
-        glBegin(GL_QUADS)
-        glVertex2d( self.x + self.size,  self.y + self.size)
-        glVertex2d( self.x + self.size,  self.y - self.size)
-        glVertex2d( self.x - self.size,  self.y - self.size)
-        glVertex2d( self.x - self.size,  self.y + self.size)
-        glEnd()
+        GL.glBegin(GL.GL_QUADS)
+        GL.glVertex2d( self.x + self.size,  self.y + self.size)
+        GL.glVertex2d( self.x + self.size,  self.y - self.size)
+        GL.glVertex2d( self.x - self.size,  self.y - self.size)
+        GL.glVertex2d( self.x - self.size,  self.y + self.size)
+        GL.glEnd()
 
         while True:
-            err = glGetError()
-            if err == GL_NO_ERROR:
+            err = GL.glGetError()
+            if err == GL.GL_NO_ERROR:
                 break
             print("Error: ", err)
 
@@ -66,17 +85,22 @@ class Window(tkinter.Toplevel):
         self.square_widget.draw()
 
     def handle_key_press(self, event):
+        # Record key and time to do the "animation"
         self.key_pressed = event.keysym.lower()
         self.time_pressed = time.time()
 
+        # Start animation by scheduling the initial call to
+        # self.animate (which will keep scheduling itself as
+        # long as a key is pressed).
         if self.key_pressed in ['left', 'right', 'up', 'down']:
-            self.after(5, self.advance)
+            self.after(5, self.animate)
 
     def handle_key_release(self, event):
         self.key_pressed = None
 
-    def advance(self):
+    def animate(self):
         if self.key_pressed is None:
+            # Stop when key was released
             return
 
         self.square_widget.draw()
@@ -94,7 +118,11 @@ class Window(tkinter.Toplevel):
             self.square_widget.y -= delta
 
         self.time_pressed = t
-        self.after(5, self.advance)
+        # We schedule a redraw almost immediately.
+        #
+        # Specifying a delay of 0 can cause a non-responsive
+        # application on some operating systems.
+        self.after(5, self.animate)
 
 if __name__ == '__main__':
 
@@ -103,7 +131,7 @@ if __name__ == '__main__':
 
     root.geometry('300x50+600+100')
 
-    label = ttk.Label(root, text="Zoom: ", padding=(10, 0, 0, 0))
+    label = ttk.Label(root, text="Square size: ", padding=(10, 0, 0, 0))
     label.grid(row=0, column=0)
     
     slider = ttk.Scale(root,
