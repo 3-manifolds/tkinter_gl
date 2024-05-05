@@ -1,7 +1,7 @@
 import os
 import sys
 import tkinter
-__version__ = '1.0a2'
+__version__ = '1.0a3'
 
 class GLCanvas(tkinter.Widget, tkinter.Misc):
     """
