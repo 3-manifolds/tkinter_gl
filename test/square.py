@@ -1,17 +1,3 @@
-import tkinter
-from tkinter import ttk
-from tkinter_gl import GLCanvas
-import time
-try:
-    from OpenGL import GL
-except ImportError:
-    raise ImportError(
-        """
-        This example requires PyOpenGL.
-
-        You can install it with "pip install PyOpenGL".
-        """)
-
 """
 Shows a square that can be moved with the cursor keys and whose size
 can be controlled by a slider.
@@ -21,11 +7,33 @@ elapsed time to compute how far the square has moved. Also tests that
 we correctly update the GLCanvas to slider events.
 """
 
+import tkinter
+from tkinter import ttk
+from tkinter_gl import GLCanvas
+import time
+import sys
+import os
+
+try:
+    import OpenGL
+    if sys.platform == 'linux':
+        # PyOpenGL is broken with wayland:
+        OpenGL.setPlatform('x11')
+    from OpenGL import GL
+except ImportError:
+    raise ImportError(
+        """
+        This example requires PyOpenGL.
+
+        You can install it with "pip install PyOpenGL".
+        """)
+
 class SquareWidget(GLCanvas):
     profile = 'legacy'
     
     def __init__(self, parent):
         super().__init__(parent)
+        self.make_current()
 
         self.size = 0.5
 

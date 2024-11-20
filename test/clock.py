@@ -1,8 +1,18 @@
+"""
+Shows a dial spinning once per second as an example of a simple animation.
+"""
+
 import tkinter
 from tkinter import ttk
 from tkinter_gl import GLCanvas
 import time
+import sys
+
 try:
+    import OpenGL
+    if sys.platform == 'linux':
+        # PyOpenGL is broken with wayland:
+        OpenGL.setPlatform('x11')
     from OpenGL import GL
 except ImportError:
     raise ImportError(
@@ -11,10 +21,6 @@ except ImportError:
 
         You can install it with "pip install PyOpenGL".
         """)
-
-"""
-Shows a dial spinning once per second as an example of a simple animation.
-"""
 
 class ClockWidget(GLCanvas):
     profile = 'legacy'

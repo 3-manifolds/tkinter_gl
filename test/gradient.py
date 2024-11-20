@@ -1,7 +1,17 @@
+"""
+Draws a gradient to show how to use shaders.
+"""
+
 import tkinter
 from tkinter_gl import GLCanvas
 import struct
+import sys
+
 try:
+    import OpenGL
+    if sys.platform == 'linux':
+        # PyOpenGL is broken with wayland:
+        OpenGL.setPlatform('x11')
     from OpenGL import GL
 except ImportError:
     raise ImportError(
@@ -11,19 +21,16 @@ except ImportError:
         You can install it with "pip install PyOpenGL".
         """)
 
-"""
-Draws a gradient to show how to use shaders.
-"""
-
 class GLView(GLCanvas):
-    profile = '3_2'
+    profile = '4_1'
     
     def __init__(self, parent, cnf={}, **kw):
         super().__init__(parent, cnf, **kw)
-
         self.initialized = False
+        self.make_current()
 
     def draw(self):
+        self.make_current()
         if not self.initialized:
             vertex_shader = GL.glCreateShader(GL.GL_VERTEX_SHADER)
             GL.glShaderSource(
@@ -88,12 +95,13 @@ class GLView(GLCanvas):
 
         width = self.winfo_width()
         height = self.winfo_height()
-
+        
         GL.glViewport(0, 0, width, height)
 
         GL.glBindVertexArray(self.vao)
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo)
         GL.glEnableVertexAttribArray(0)
+        
         GL.glVertexAttribPointer(0, # Data are for the first vertex attribute
                                     # Corresponds to "in vec4 position" in
                                     # vertex shader

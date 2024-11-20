@@ -1,6 +1,18 @@
+"""
+Fills a square with a solid color which changes with <Enter>
+or <Leave> events.
+"""
+
 import tkinter
 from tkinter_gl import GLCanvas
+import sys
+import os
+
 try:
+    import OpenGL
+    if sys.platform == 'linux':
+        # PyOpenGL is broken with wayland:
+        OpenGL.setPlatform('x11')
     from OpenGL import GL
 except ImportError:
     raise ImportError(
