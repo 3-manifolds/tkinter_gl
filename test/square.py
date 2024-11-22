@@ -81,12 +81,17 @@ class Window(tkinter.Toplevel):
         
         label.pack(fill='x')
         frame.pack(expand=1, fill="both")
-        self.square_widget.pack(expand=1, fill="both")
+        # The padding will be removed in the pack hack.
+        self.square_widget.pack(expand=1, fill="both", pady=1)
         
         self.bind('<KeyPress>', self.handle_key_press)
         self.bind('<KeyRelease>', self.handle_key_release)
 
-        self.update()
+    def pack_hack(self):
+        # On linux and Windows the graphics sometimes does not render when the
+        # widget is first mapped.  This forces a tiny resize which triggers a
+        # redraw.  It is not clear why this is needed.
+        self.square_widget.pack_configure(pady=0)
 
     def set_size(self, value):
         self.square_widget.size = float(value)
@@ -135,21 +140,20 @@ class Window(tkinter.Toplevel):
 if __name__ == '__main__':
 
     root = tkinter.Tk()
-    window = Window()
-
-    root.geometry('300x50+600+100')
+    # Make it big enoush so that the close button is visible on Ubuntu with high resolution.
+    root.geometry('600x75+600+100')
 
     label = ttk.Label(root, text="Square size: ", padding=(10, 0, 0, 0))
     label.grid(row=0, column=0)
     
-    slider = ttk.Scale(root,
-                       orient=tkinter.HORIZONTAL,
-                       command=window.set_size,
-                       value=window.square_widget.size)
-    slider.grid(row=0, column=1, padx=20, pady=20, sticky='nsew')
+    slider = ttk.Scale(root, orient=tkinter.HORIZONTAL)
+    slider.grid(row=0, column=1, padx=20, pady=30, sticky='nsew')
     root.columnconfigure(1, weight=1)
 
+    window = Window()
+    slider.configure(command=window.set_size,
+                     value=window.square_widget.size)
+    window.after(10, window.pack_hack)
     print("Using OpenGL", window.square_widget.gl_version())
-
     root.mainloop()
 
