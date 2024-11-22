@@ -25,7 +25,12 @@ class GLView(GLCanvas):
         super().__init__(parent, cnf, **kw)
         self.bind('<Enter>', lambda event: self.draw_impl(color='blue'))
         self.bind('<Leave>', lambda event: self.draw_impl(color='purple'))
-
+    
+    def pack_hack(self):
+        # Windows places the GLView at the upper left, ignoring the
+        # padding.  This tiny adustment corrects the layout.
+        self.pack_configure(pady=50)
+    
     def draw(self):
         if (0 <= self.winfo_pointerx() < self.winfo_width() and
             0 <= self.winfo_pointery() < self.winfo_height()):
@@ -46,7 +51,8 @@ if __name__ == '__main__':
     root = tkinter.Tk()
     surface = GLView(root)
     print("Using OpenGL", surface.gl_version())
-    surface.pack(expand=True, fill='both', padx=50, pady=50)
+    surface.pack(expand=True, fill='both', padx=50, pady=51)
+    surface.after(50, surface.pack_hack)
     root.mainloop()
 
     

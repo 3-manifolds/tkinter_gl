@@ -32,6 +32,11 @@ class ClockWidget(GLCanvas):
 
         self.is_first_draw = True
 
+    def pack_hack(self):
+        # Windows places the GLView at the upper left, ignoring the
+        # padding.  This tiny adustment corrects the layout.
+        self.pack_configure(pady=50)
+
     def draw(self):
         self.make_current()
  
@@ -79,6 +84,7 @@ if __name__ == '__main__':
     root = tkinter.Tk()
     widget = ClockWidget(root)
     print("Using OpenGL", widget.gl_version())
-    widget.pack(expand=True, fill='both', padx=50, pady=50)
+    widget.pack(expand=True, fill='both', padx=50, pady=51)
+    widget.after(50, widget.pack_hack)
     root.mainloop()
 

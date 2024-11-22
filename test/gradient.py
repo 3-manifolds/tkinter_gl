@@ -29,6 +29,11 @@ class GLView(GLCanvas):
         self.initialized = False
         self.make_current()
 
+    def pack_hack(self):
+        # Windows places the GLView in the upper left corner,
+        # ignoring the specified padding.  This hack fixes it.
+        self.pack_configure(pady=50)
+    
     def draw(self):
         self.make_current()
         if not self.initialized:
@@ -129,7 +134,8 @@ if __name__ == '__main__':
     root = tkinter.Tk()
     surface = GLView(root)
     print("Using OpenGL", surface.gl_version())
-    surface.pack(expand=True, fill='both', padx=50, pady=50)
+    surface.pack(expand=True, fill='both', padx=50, pady=51)
+    surface.after(50, surface.pack_hack)
     root.mainloop()
 
     

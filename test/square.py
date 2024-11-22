@@ -150,7 +150,6 @@ if __name__ == '__main__':
     window = Window()
     slider.configure(command=window.set_size,
                      value=window.square_widget.size)
-    window.after(10, window.pack_hack)
+    window.after(50, window.pack_hack)
     print("Using OpenGL", window.square_widget.gl_version())
     root.mainloop()
-
