@@ -16,9 +16,6 @@ import os
 
 try:
     import OpenGL
-    if sys.platform == 'linux':
-        # PyOpenGL is broken with wayland:
-        OpenGL.setPlatform('x11')
     from OpenGL import GL
 except ImportError:
     raise ImportError(
