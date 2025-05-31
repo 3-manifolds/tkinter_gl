@@ -1,7 +1,8 @@
 import os
 import sys
+import platform
 import tkinter
-__version__ = '1.0'
+__version__ = '1.1a1'
 
 class GLCanvas(tkinter.Widget, tkinter.Misc):
     """
@@ -35,7 +36,10 @@ class GLCanvas(tkinter.Widget, tkinter.Misc):
         if sys.platform == 'win32':
             # Make sure the parent has been mapped.
             parent.update()
-        pkg_dir = os.path.join(__path__[0], 'tk', sys.platform,)
+        target = sys.platform
+        if sys.platform == 'linux':
+             target += '-' + platform.machine()
+        pkg_dir = os.path.join(__path__[0], 'tk', target)
         if not os.path.exists(pkg_dir):
             raise RuntimeError('TkGL package directory "%s" is missing.' % pkg_dir)
         parent.tk.call('lappend', 'auto_path', pkg_dir)
