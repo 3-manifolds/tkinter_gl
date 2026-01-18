@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools>=60",
+    "setuptools>=78.0",
     "setuptools-scm>=8.0",
     "wheel"]
 build-backend = "setuptools.build_meta"
@@ -20,12 +20,12 @@ maintainers = [
     { name="Nathan M. Dunfield", email="nathan@dunfield.info" },
     { name="Matthias Görner", email="enischte@gmail.com" },
 ]
+license = "GPL-2.0-or-later"
 requires-python = ">=3.8"
 keywords = ["OpenGL", "tkinter", "rendering"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
     "Operating System :: MacOS",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
@@ -40,5 +40,3 @@ classifiers = [
 
 [tool.setuptools.dynamic]
 version = {attr = "tkinter_gl.__version__"}
-
-# [tool.setuptools_scm]  # Includes in package all git-tracked files in src/
